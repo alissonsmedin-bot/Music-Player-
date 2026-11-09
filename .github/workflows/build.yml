@@ -33,6 +33,12 @@ jobs:
           echo "PROJECT_DIR=$DIR" >> "$GITHUB_ENV"
           echo "Projeto em: $DIR"
 
+      - name: Usar o Compose 1.11 (compatível com o AGP 8.13)
+        run: |
+          find "$PROJECT_DIR" -type f \( -name '*.kts' -o -name '*.gradle' -o -name '*.toml' \) -exec sed -i 's/2026\.08\.00/2026.06.01/g' {} +
+          echo "Linhas do Compose BOM no projeto:"
+          grep -rnE 'compose-bom|composeBom' "$PROJECT_DIR" --include=*.kts --include=*.gradle --include=*.toml || true
+
       - name: Instalar o JDK 17
         uses: actions/setup-java@v4
         with:
